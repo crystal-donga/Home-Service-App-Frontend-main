@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
-import { useUpdateUserDetailsMutation } from "../../api/userApi";
+import { useUpdateUserDetailsMutation ,useGetUserDetailsQuery} from "../../api/userApi";
 
  function UpdateUserDetailsForm() {
     const [formData, setFormData] = useState({
@@ -21,7 +21,7 @@ import { useUpdateUserDetailsMutation } from "../../api/userApi";
     });
      
       const [imagePreview, setImagePreview] = useState(null);
-      const [updateUserDetails] = useUpdateUserDetailsMutation();
+      const [updateUserDetails,refetch ] = useUpdateUserDetailsMutation();
       const navigate = useNavigate();
 
         useEffect(() => {
@@ -39,7 +39,21 @@ import { useUpdateUserDetailsMutation } from "../../api/userApi";
             }
           }
         }, []);
-
+        
+        // Fetch user details from API
+   const { data: existingUserDetails, isLoading } = useGetUserDetailsQuery(formData.userId, {
+    skip: !formData.userId,
+  });
+        // Populate form with existing user details
+useEffect(() => {
+  if (existingUserDetails) {
+    setFormData((prev) => ({
+      ...prev,
+      ...existingUserDetails,
+    
+    }));
+  }
+}, [existingUserDetails]);
         const handleChange = (e) => {
             setFormData({ ...formData, [e.target.name]: e.target.value });
           };
@@ -72,6 +86,7 @@ import { useUpdateUserDetailsMutation } from "../../api/userApi";
                   console.log("response",response)
                   toast.success("User details updated successfully!");
                   navigate("/me")
+                  
                   
                 } catch (error) {
                   toast.error(error?.data?.message || "Failed to submit user details.");

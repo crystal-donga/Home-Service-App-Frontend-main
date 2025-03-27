@@ -1,7 +1,7 @@
 import  { useState, useEffect} from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import  {useCreateUserDetailsMutation}  from "../../api/userApi";
+import  {useCreateUserDetailsMutation }  from "../../api/userApi";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode"; // Ensure jwtDecode is imported
 import { useNavigate } from "react-router-dom";
@@ -39,6 +39,8 @@ const UserDetailsForm = () => {
       }
     }
   }, []);
+
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

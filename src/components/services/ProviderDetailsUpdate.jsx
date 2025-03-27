@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-import {useUpdateProviderDetailsMutation} from "../../api/providerApi"
+import {useUpdateProviderDetailsMutation,useGetProviderDetailsQuery} from "../../api/providerApi"
 export default function ProviderDetailsUpdate() {
   const [formData, setFormData] = useState({
     serviceProviderId: "", // Ensure userId is included
@@ -17,6 +17,7 @@ export default function ProviderDetailsUpdate() {
   const [imagePreview, setImagePreview] = useState(null);
   const navigate = useNavigate();
   const [updateProviderDetails, { isLoading, error }] = useUpdateProviderDetailsMutation();
+
   useEffect(() => {
     const token = Cookies.get("authToken");
     if (token) {
@@ -34,6 +35,24 @@ export default function ProviderDetailsUpdate() {
     }
   }, []);
 
+
+const { data: existingProviderDetails } = useGetProviderDetailsQuery(formData.serviceProviderId, {
+  skip: !formData.serviceProviderId, // Ensures the query runs only if serviceProviderId exists
+});
+
+useEffect(() => {
+  if (existingProviderDetails) {
+    setFormData((prev) => ({
+      ...prev,
+      ...existingProviderDetails,
+     
+    }));
+  }
+}, [existingProviderDetails]);
+
+
+
+   
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };

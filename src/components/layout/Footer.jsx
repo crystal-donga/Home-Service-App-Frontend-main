@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="bg-indigo-600 text-white py-8 mt-12 shadow-lg">
+    <footer className="bg-indigo-600 text-white py-8  shadow-lg">
       <div className="container mx-sticky px-4 flex flex-col md:flex-row justify-between items-center">
         <div className="text-center md:text-left mb-4 md:mb-0">
           <h2 className="text-xl font-semibold">Home Service App</h2>

@@ -22,12 +22,12 @@ const UserProfile = () => {
   return (
     <div className="flex">
       {/* Sidebar - It will collapse instead of disappearing */}
-      <UserSidebar onCollapse={() => setIsSidebarCollapsed(true)} />
+      <UserSidebar isOpen={isSidebarCollapsed} setIsOpen={setIsSidebarCollapsed} />
 
       {/* Main Content */}
-      <div className={`flex-1 p-6 bg-gray-100 min-h-screen transition-all duration-300 ${isSidebarCollapsed ? "ml-16" : "ml-64"}`}>
+      <div className={`flex-1 p-6 bg-gray-300 min-h-screen transition-all duration-300 ${isSidebarCollapsed ? "ml-50" : "ml-0"}`}>
         {/* <h1 className="text-2xl font-bold text-gray-800 mb-4">User Profile</h1> */}
-        <UserDetailsForm onSubmitSuccess={() => setIsSidebarCollapsed(true)} />
+        {/* <UserDetailsForm onSubmitSuccess={() => setIsSidebarCollapsed(true)} /> */}
       </div>
     </div>
   );

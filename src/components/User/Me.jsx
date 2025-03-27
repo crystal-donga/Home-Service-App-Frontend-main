@@ -10,7 +10,7 @@ function Me() {
   const [userId, setUserId] = useState(null);
   const navigate = useNavigate()
   const [deleteUser] = useDeleteUserMutation();
-  const { data: userDetails, error: detailsError, isLoading: detailsLoading } = useGetUserDetailsQuery(userId, {
+  const { data: userDetails, error: detailsError, isLoading: detailsLoading ,refetch } = useGetUserDetailsQuery(userId, {
     skip: !userId,
   });
   useEffect(() => {
@@ -32,6 +32,7 @@ function Me() {
 
   const handleEdit = () => {
     navigate("/user-profile-update");
+    //await refetch();
   };
   const handleDelete = async () => {
     const confirmDelete = window.confirm("Are you sure you want to delete your profile? This action is irreversible!");
@@ -53,6 +54,7 @@ function Me() {
   
         // Redirect to login page
         navigate("/login");
+       // refetch()
       } catch (error) {
         console.error("Error deleting profile:", error);
         toast.error("Failed to delete profile. Please try again.");
@@ -67,9 +69,9 @@ function Me() {
   return <div className="text-center text-blue-500 text-lg font-semibold">Loading...</div>;
   }
 
-  if(detailsError){
-    return <div className="text-center text-red-500 text-lg font-semibold">Error</div>
-    };
+  // if(detailsError){
+  //   return <div className="text-center text-red-500 text-lg font-semibold">Error</div>
+  //   };
 
   
   console.log("Merged User Data:", userDetails);

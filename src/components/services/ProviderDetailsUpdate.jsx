@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import {useUpdateProviderDetailsMutation,useGetProviderDetailsQuery} from "../../api/providerApi"
 export default function ProviderDetailsUpdate() {
   const [formData, setFormData] = useState({
-    serviceProviderId: "", // Ensure userId is included
+    userId: "", // Ensure userId is included
     companyName: "",
     experienceYears: "",
     address: "",
@@ -23,12 +23,12 @@ export default function ProviderDetailsUpdate() {
     if (token) {
       try {
         const decoded = jwtDecode(token);
-        console.log("serviceproviderid",decoded.serviceProviderId)
-        if (!decoded.serviceProviderId) {
+        console.log("serviceproviderid",decoded.userId)
+        if (!decoded.userId) {
           console.error("provider ID not found in token!");
           return;
         }
-        setFormData((prev) => ({ ...prev, serviceProviderId: decoded.serviceProviderId }));
+        setFormData((prev) => ({ ...prev, userId: decoded.userId }));
       } catch (error) {
         console.log("Invalid token",error);
       }
@@ -36,15 +36,16 @@ export default function ProviderDetailsUpdate() {
   }, []);
 
 
-const { data: existingProviderDetails } = useGetProviderDetailsQuery(formData.serviceProviderId, {
-  skip: !formData.serviceProviderId, // Ensures the query runs only if serviceProviderId exists
+const { data: existingProviderDetails } = useGetProviderDetailsQuery(formData.userId, {
+  skip: !formData.userId, // Ensures the query runs only if serviceProviderId exists
 });
-
+console.log("existing form data",existingProviderDetails)
 useEffect(() => {
   if (existingProviderDetails) {
     setFormData((prev) => ({
       ...prev,
       ...existingProviderDetails,
+     
      
     }));
   }

@@ -17,8 +17,8 @@ import Cookies from 'js-cookie';
             return headers;
         },
     }),
-    endpoints: (builder) => ({
-        createProvider: builder.mutation({
+ endpoints: (builder) => ({
+    createProvider: builder.mutation({
             query: (providerData) => ({
                 url: '/register',
                 method: 'POST',

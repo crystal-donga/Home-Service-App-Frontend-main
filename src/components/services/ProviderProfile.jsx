@@ -39,7 +39,8 @@ import "react-toastify/dist/ReactToastify.css";
       if (confirmDelete) {
         try {
           // Call API to delete user (assuming you have `useDeleteUserMutation` hook)
-          const response = await deleteProviderDetails(provider).unwrap();
+          const response = await deleteProviderDetails({ serviceProviderId: provider.serviceProviderId }).unwrap();
+
           console.log("provider deleted successfully:", response);
     
           // Remove auth token from cookies
@@ -72,12 +73,12 @@ import "react-toastify/dist/ReactToastify.css";
       <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">My Profile</h2>
       {provider ? (
         <div className="flex flex-col items-center">
-          {/* <img
-            src={`http://localhost:8081/${provider.imageUrl}`}
+          <img
+           src={provider.profilePictureUrl || "https://via.placeholder.com/150"}
             alt="Profile"
             className="w-32 h-32 rounded-full border-4 border-gray-300 shadow-md object-cover"
             onError={(e) => (e.target.src = "https://via.placeholder.com/150")}
-          /> */}
+          />
           <div className="mt-4 w-full">
             <p className="text-gray-700 text-lg">
               <span className="font-medium text-gray-900">Name:</span> {provider.userName}

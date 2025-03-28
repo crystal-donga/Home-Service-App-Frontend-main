@@ -18,7 +18,7 @@ const ProviderDetails = () => {
     companyNumber:"",
     experienceYears: "",
     address: "",
-    profileImage: "", // Store base64 image
+    imageUrl: "", 
   });
 
   const [imagePreview, setImagePreview] = useState(null); // Preview selected image
@@ -50,24 +50,13 @@ const ProviderDetails = () => {
     }));
   };
 
-  // Handle Image Upload
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result); // Show preview
-        console.log("images ", reader.result);
-        setFormData((prev) => ({
-          ...prev,
-          profileImage: reader.result, // Store as base64
-        }));
-      };
-      reader.readAsDataURL(file);
-      
-     
+        setFormData({ ...formData, profilePictureUrl: file });
     }
-  };
+};
+
 
   // Handle Form Submission
   const handleSubmit = async (e) => {
@@ -77,10 +66,28 @@ const ProviderDetails = () => {
       toast.error("Please fill out all fields!");
       return;
     }
+    const providerDetailsBlob = new Blob([JSON.stringify({
+      userId: formData.userId,
+      companyName: formData.companyName,
+      companyNumber: formData.companyNumber,
+      experienceYears: formData.experienceYears,
+      address: formData.address
+      
+  })], { type: 'application/json' });
+  
+  const formDataToSend = new FormData();
+
+  formDataToSend.append("ServiceProviderRegisterDto",providerDetailsBlob);
+  if (formData.profilePictureUrl) {
+    formDataToSend.append("imageFile", formData.imageUrl);
+} else {
+    console.warn("No image selected");
+}
+  
 
     try {
-      console.log("Submitting Data:", formData);
-       await createProvider(formData).unwrap();
+      console.log("Submitting Data:", formDataToSend);
+       await createProvider(formDataToSend).unwrap();
        toast.success("Provider added successfully!");
       setTimeout(() => {
         navigate("/provider-profile"); // Redirect to myself profile

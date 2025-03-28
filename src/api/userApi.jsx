@@ -17,12 +17,16 @@ const userApi = createApi({
   }),
   endpoints: (builder) => ({
     createUserDetails: builder.mutation({
-      query: (userDetails) => ({
-        url: "/addDetails",
-        method: "POST",
-        body: userDetails,
-      }),
+      query: (formData) => {
+        
+        return {
+          url: "/addDetails",
+          method: "POST",
+          body: formData,
+        };
+      },
     }),
+    
 
     getUserDetails: builder.query({
       query: (id) => ({

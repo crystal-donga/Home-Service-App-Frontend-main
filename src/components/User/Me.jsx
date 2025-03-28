@@ -75,7 +75,7 @@ function Me() {
 
   
   console.log("Merged User Data:", userDetails);
-
+   //console.log(userDetails.profilePictureUrl);
   return (
     <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6 mt-10 border border-gray-200">
       <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">My Profile</h2>
@@ -83,11 +83,11 @@ function Me() {
       {userDetails ? (
         <div className="flex flex-col items-center">
           {/* Profile Picture */}
-          {/* <img
-            src={mergedUser.profilePictureUrl || "https://via.placeholder.com/150"}
+          <img
+            src={userDetails.profilePictureUrl || "https://via.placeholder.com/150"}
             alt="Profile"
             className="w-40 h-40 rounded-full border-4 border-gray-300 shadow-md object-cover"
-          /> */}
+          />
 
           <div className="mt-6 w-full">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

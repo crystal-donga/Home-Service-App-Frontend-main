@@ -49,20 +49,10 @@ const UserDetailsForm = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      if (!file.type.startsWith("image/")) {
-        toast.error("Please select a valid image file!");
-        return;
-      }
-      setFormData({ ...formData, profilePicture: file });
-
-      // Image preview
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+        setFormData({ ...formData, profilePictureUrl: file });
     }
-  };
+};
+
 
   const validateForm = () => {
     let newErrors = {};
@@ -78,22 +68,40 @@ const UserDetailsForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) {
       toast.error("Please fill in all required fields.");
       return;
     }
-    
-//      // Convert date format from "YYYY-MM-DD" to "DD-MM-YYYY"
-//   const formattedDate = formData.dateOfBirth
-//   ? formData.dateOfBirth.split("-").reverse().join("-")
-//   : "";
+    const userDetailsBlob = new Blob([JSON.stringify({
+      userId: formData.userId,
+      address: formData.address,
+      city: formData.city,
+      state: formData.state,
+      country: formData.country,
+      zipCode: formData.zipCode,
+      dateOfBirth: formData.dateOfBirth
+  })], { type: 'application/json' });
+  
+  const formDataToSend = new FormData();
 
-// const updatedFormData = { ...formData, dateOfBirth: formattedDate };
+  formDataToSend.append("UserDetailsRegisterDto",userDetailsBlob);
+  if (formData.profilePictureUrl) {
+    formDataToSend.append("imageFile", formData.profilePictureUrl);
+} else {
+    console.warn("No image selected");
+}
+  
+  for (let pair of formDataToSend.entries()) {
+    console.log(pair[0], pair[1]);
+  }
+
+    
     try {
-      console.log(formData)
-     await createUserDetails(formData).unwrap();
+      console.log("formdatatosend",formDataToSend)
+     await createUserDetails(formDataToSend).unwrap();
     //console.log("response",response)
       toast.success("User details submitted successfully!");
       navigate("/me")
